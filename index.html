@@ -1,206 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Global Trade Capital</title>
+
 <style>
-  /* --- Global Styles --- */
-  body {
+body {
     margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #121212;
-    color: #f0f0f0;
-  }
-  header {
-    background-color: #0a3d62;
+    font-family: Arial, sans-serif;
+    background: #0b0f1a;
+    color: white;
+}
+
+header {
     padding: 20px;
     text-align: center;
-  }
-  header img { max-height: 50px; margin-right: 10px; vertical-align: middle;}
-  header h1 { display: inline; font-size: 2rem; font-weight: bold; color: #00a8ff; }
-  nav { display: flex; justify-content: center; gap: 20px; margin: 20px 0; }
-  nav button {
-    background-color: #1e272e;
-    color: #00a8ff;
-    border: none;
-    padding: 15px 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  nav button:hover { background-color: #00a8ff; color: #1e272e; }
-  main { padding: 20px; display: flex; flex-direction: column; gap: 30px; }
-  .ticker, .news-ticker {
-    background-color: #1e272e;
-    padding: 10px;
-    overflow-x: auto;
-    white-space: nowrap;
-    border-radius: 5px;
-  }
-  .ticker span, .news-ticker span { margin-right: 40px; font-weight: bold; }
-  .section { background-color: #1e272e; padding: 20px; border-radius: 10px; }
-  .cards { display: flex; flex-wrap: wrap; gap: 15px; }
-  .card {
-    background-color: #2f3640;
-    padding: 15px;
-    flex: 1 1 200px;
-    border-radius: 10px;
-  }
-  .testimonial { font-style: italic; margin: 10px 0; }
-  footer { background-color: #0a3d62; padding: 20px; text-align: center; }
-  a { color: #00a8ff; text-decoration: none; }
+    font-size: 28px;
+    font-weight: bold;
+    background: #111827;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.card {
+    background: #111827;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.ticker {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #222;
+}
+
+.green { color: #00ff88; }
+.red { color: #ff4d4d; }
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #111827;
+    margin-top: 40px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-  <img src="logo.png" alt="Company Logo">
-  <h1>Global Trading</h1>
+Global Trade Capital
 </header>
 
-<div class="ticker" id="stock-ticker">Loading stock ticker...</div>
+<div class="container">
 
-<nav>
-  <button onclick="showSection('crypto')">Crypto</button>
-  <button onclick="showSection('stocks')">Stocks</button>
-  <button onclick="showSection('exchange')">Exchange Rates</button>
-</nav>
+<div class="card">
+<h2>Live Market Data</h2>
+<div id="market-data">Loading live data...</div>
+</div>
 
-<main>
-  <div class="section" id="crypto">
-    <h2>Crypto Market</h2>
-    <div class="cards" id="crypto-cards">Loading crypto...</div>
-  </div>
-
-  <div class="section" id="stocks" style="display:none">
-    <h2>Stocks Market</h2>
-    <div class="cards" id="stock-cards">Loading stocks...</div>
-  </div>
-
-  <div class="section" id="exchange" style="display:none">
-    <h2>Exchange Rates</h2>
-    <div class="cards" id="exchange-cards">Loading exchange rates...</div>
-  </div>
-
-  <div class="section" id="testimonials">
-    <h2>Testimonials</h2>
-    <div class="testimonial">"Best trading platform I've used!" — Client A</div>
-    <div class="testimonial">"Reliable and fast." — Client B</div>
-    <div class="testimonial">"Professional and easy to use." — Client C</div>
-  </div>
-
-  <div class="section" id="profile">
-    <h2>DocGod / Profile Info</h2>
-    <p>Name: DocGod</p>
-    <p>Email: docgod@example.com</p>
-    <p>Bank Accounts: Bank 1, Bank 2 (placeholders)</p>
-  </div>
-</main>
-
-<div class="news-ticker" id="news-ticker">Loading news...</div>
+</div>
 
 <footer>
-  <p>Contact Us: <a href="mailto:support@globaltrade.com">support@globaltrade.com</a></p>
+© 2026 Global Trade Capital
 </footer>
 
 <script>
-  // --- Navigation ---
-  function showSection(section) {
-    document.getElementById('crypto').style.display = 'none';
-    document.getElementById('stocks').style.display = 'none';
-    document.getElementById('exchange').style.display = 'none';
-    document.getElementById(section).style.display = 'block';
-  }
+async function loadMarket() {
+    try {
+        const response = await fetch("/api/market");
+        const data = await response.json();
 
-  // --- Live Crypto ---
-  async function loadCrypto() {
-    const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1');
-    const data = await res.json();
-    const container = document.getElementById('crypto-cards');
-    container.innerHTML = '';
-    data.forEach(coin => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `<h3>${coin.name} (${coin.symbol.toUpperCase()})</h3>
-                        <p>Price: $${coin.current_price}</p>
-                        <p>Market Cap: $${coin.market_cap.toLocaleString()}</p>
-                        <p>24h Change: ${coin.price_change_percentage_24h.toFixed(2)}%</p>`;
-      container.appendChild(card);
-    });
-  }
+        const container = document.getElementById("market-data");
+        container.innerHTML = "";
 
-  // --- Live Stocks via Alpaca ---
-  async function loadStocks() {
-    const API_KEY = process.env.ALPACA_KEY; // Add your Alpaca key in env variable
-    const API_SECRET = process.env.ALPACA_SECRET; // Add your Alpaca secret in env variable
-    const res = await fetch(`https://paper-api.alpaca.markets/v2/stocks?symbols=AAPL,MSFT,GOOG,TSLA`, {
-      headers: { 'APCA-API-KEY-ID': API_KEY, 'APCA-API-SECRET-KEY': API_SECRET }
-    });
-    const data = await res.json();
-    const container = document.getElementById('stock-cards');
-    container.innerHTML = '';
-    data.stocks.forEach(stock => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `<h3>${stock.symbol}</h3>
-                        <p>Price: $${stock.last.price}</p>
-                        <p>High: $${stock.high.price}</p>
-                        <p>Low: $${stock.low.price}</p>
-                        <p>Market Cap: $${stock.market_cap.toLocaleString()}</p>`;
-      container.appendChild(card);
-    });
-  }
+        data.forEach(stock => {
+            const changeClass = stock.change >= 0 ? "green" : "red";
 
-  // --- Exchange Rates ---
-  async function loadExchange() {
-    const res = await fetch('https://api.exchangerate.host/latest?base=USD');
-    const data = await res.json();
-    const container = document.getElementById('exchange-cards');
-    container.innerHTML = '';
-    ['LYD', 'EUR', 'GBP'].forEach(curr => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `<h3>${curr}</h3>
-                        <p>Rate: ${data.rates[curr]}</p>`;
-      container.appendChild(card);
-    });
-  }
+            container.innerHTML += `
+                <div class="ticker">
+                    <div>${stock.symbol}</div>
+                    <div>$${stock.price}</div>
+                    <div class="${changeClass}">
+                        ${stock.change >= 0 ? "+" : ""}${stock.change}%
+                    </div>
+                </div>
+            `;
+        });
 
-  // --- Top Stock Ticker ---
-  async function loadTicker() {
-    const container = document.getElementById('stock-ticker');
-    const res = await fetch('https://paper-api.alpaca.markets/v2/stocks?symbols=AAPL,MSFT,GOOG,TSLA', {
-      headers: { 'APCA-API-KEY-ID': process.env.ALPACA_KEY, 'APCA-API-SECRET-KEY': process.env.ALPACA_SECRET }
-    });
-    const data = await res.json();
-    container.innerHTML = '';
-    data.stocks.forEach(stock => {
-      const span = document.createElement('span');
-      span.textContent = `${stock.symbol}: $${stock.last.price}`;
-      container.appendChild(span);
-    });
-  }
+    } catch (error) {
+        document.getElementById("market-data").innerHTML =
+            "Error loading market data.";
+        console.error(error);
+    }
+}
 
-  // --- News Ticker (Mocked for now) ---
-  const news = ['Market rallies today', 'Crypto hits new highs', 'USD/LYD stable', 'Global trading insights'];
-  const newsContainer = document.getElementById('news-ticker');
-  news.forEach(item => {
-    const span = document.createElement('span');
-    span.textContent = item;
-    newsContainer.appendChild(span);
-  });
-
-  // --- Load All ---
-  async function loadAll() {
-    await loadCrypto();
-    await loadStocks();
-    await loadExchange();
-    await loadTicker();
-  }
-
-  loadAll();
-  setInterval(loadAll, 30000); // refresh every 30 sec
+loadMarket();
+setInterval(loadMarket, 10000); // refresh every 10 seconds
 </script>
 
 </body>
