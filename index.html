@@ -1,105 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Global Trade Capital</title>
-  <style>
-    body {
-      background: #0b0f1a;
-      color: white;
-      font-family: Arial;
-      margin: 0;
-    }
-
-    header {
-      background: black;
-      padding: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-    }
-
-    .logo {
-      width: 40px;
-      margin-right: 15px;
-    }
-
-    .ticker {
-      background: #111;
-      padding: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .ticker span {
-      display: inline-block;
-      padding-right: 50px;
-      animation: scroll 20s linear infinite;
-    }
-
-    @keyframes scroll {
-      from { transform: translateX(100%); }
-      to { transform: translateX(-100%); }
-    }
-
-    .stocks {
-      padding: 30px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: #141a2e;
-      padding: 20px;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Trade Capital - Full Dashboard</title>
+<style>
+/* ----------------- General ----------------- */
+body { font-family: 'Arial', sans-serif; margin:0; background:#0d1b2a; color:#fff; }
+header { display:flex; justify-content:space-between; align-items:center; padding:1rem; background:#1b263b; }
+.logo { font-weight:bold; font-size:1.8rem; color:#e0e1dd; }
+.lang-toggle button { margin-left:0.5rem; padding:0.5rem 1rem; font-weight:bold; cursor:pointer; background:#415a77; border:none; border-radius:5px; color:#fff; }
+.dashboard { display:flex; justify-content:space-around; margin:2rem 0; flex-wrap:wrap; gap:1rem; }
+.card { background:#415a77; padding:2rem; border-radius:1rem; font-weight:bold; text-align:center; flex:1; min-width:150px; cursor:pointer; transition:0.3s; }
+.card:hover { background:#778da9; }
+.top-ticker, .bottom-ticker { overflow:hidden; white-space:nowrap; padding:0.5rem; background:#778da9; font-weight:bold; }
+.companies { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin:2rem 0; }
+.company-card { background:#1b263b; padding:1rem; border-radius:0.8rem; text-align:center; width:200px; font-weight:bold; cursor:pointer; transition:0.3s; }
+.company-card:hover { background:#415a77; }
+.company-buttons button { margin:0.3rem; padding:0.3rem 0.6rem; font-weight:bold; border:none; border-radius:5px; cursor:pointer; }
+.company-buttons .buy { background:green; color:white; }
+.company-buttons .sell { background:red; color:white; }
+/* Arabic support */
+body[dir="rtl"] { direction:rtl; }
+</style>
 </head>
-
 <body>
-
 <header>
-  🌍 Global Trade Capital
+  <div class="logo">Global Trade Capital</div>
+  <div class="lang-toggle">
+    <button id="lang-en">English</button>
+    <button id="lang-ar">Arabic</button>
+  </div>
 </header>
 
-<div class="ticker" id="ticker">
-  <span>Loading ticker...</span>
-</div>
+<main>
+  <!-- Top live stock ticker -->
+  <section class="top-ticker" id="stock-ticker">Loading live stocks...</section>
 
-<div class="stocks" id="stocks"></div>
+  <!-- Dashboard cards -->
+  <div class="dashboard">
+    <div class="card" id="portfolio">Portfolio</div>
+    <div class="card" id="contact">Contact Us</div>
+    <div class="card" id="disclaimer">Disclaimer</div>
+  </div>
+
+  <!-- Companies -->
+  <section class="companies" id="companies"></section>
+
+  <!-- Bottom news ticker -->
+  <section class="bottom-ticker" id="news-ticker">Breaking: Market update news scrolling here ...</section>
+</main>
 
 <script>
-async function loadStocks() {
-  const res = await fetch("/api/stocks");
-  const data = await res.json();
+// ---------------- Language Toggle ----------------
+const langEn = document.getElementById('lang-en');
+const langAr = document.getElementById('lang-ar');
+langEn.addEventListener('click', ()=>{document.body.dir='ltr';});
+langAr.addEventListener('click', ()=>{document.body.dir='rtl';});
 
-  const container = document.getElementById("stocks");
-  const ticker = document.getElementById("ticker");
+// ---------------- Companies ----------------
+const companiesData = [
+  { name: "Apple", ticker: "AAPL" },
+  { name: "Tesla", ticker: "TSLA" },
+  { name: "Amazon", ticker: "AMZN" },
+  { name: "Microsoft", ticker: "MSFT" },
+  { name: "NVIDIA", ticker: "NVDA" }
+];
+const companiesContainer = document.getElementById('companies');
+companiesData.forEach(c=>{
+  const div = document.createElement('div');
+  div.classList.add('company-card');
+  div.innerHTML = `
+    <div style="font-size:1.2rem;">${c.name}</div>
+    <div id="price-${c.ticker}">Loading...</div>
+    <div class="company-buttons">
+      <button class="buy">Buy</button>
+      <button class="sell">Sell</button>
+    </div>
+  `;
+  companiesContainer.appendChild(div);
+});
 
-  container.innerHTML = "";
-  let tickerText = "";
-
-  for (let symbol in data) {
-    const price = data[symbol].latestTrade.p;
-    container.innerHTML += `
-      <div class="card">
-        ${symbol} <br>
-        $${price.toFixed(2)}
-      </div>
-    `;
-
-    tickerText += `${symbol}: $${price.toFixed(2)}  |  `;
-  }
-
-  ticker.innerHTML = `<span>${tickerText}</span>`;
+// ---------------- Live Stock Prices ----------------
+async function fetchStockPrice(ticker){
+  try{
+    const res = await fetch(`/api/market?ticker=${ticker}`);
+    const data = await res.json();
+    return data.price || "N/A";
+  }catch(e){ return "N/A"; }
 }
 
-loadStocks();
-setInterval(loadStocks, 15000);
-</script>
+async function updateStockPrices(){
+  for(let c of companiesData){
+    const price = await fetchStockPrice(c.ticker);
+    document.getElementById(`price-${c.ticker}`).textContent = `$${price}`;
+  }
+}
+setInterval(updateStockPrices, 5000);
+updateStockPrices();
 
+// ---------------- Top Ticker ----------------
+const stockTicker = document.getElementById('stock-ticker');
+let scrollPos = 0;
+function updateTopTicker(){
+  stockTicker.textContent = companiesData.map(c=>`${c.ticker}: $${document.getElementById('price-'+c.ticker)?.textContent||"N/A"}`).join(" | ");
+  scrollPos = stockTicker.offsetWidth;
+}
+setInterval(updateTopTicker, 5000);
+updateTopTicker();
+setInterval(()=>{ scrollPos-=2; stockTicker.style.transform=`translateX(${scrollPos}px)`; if(scrollPos<-stockTicker.scrollWidth) scrollPos=stockTicker.offsetWidth; }, 50);
+
+// ---------------- Bottom News Ticker ----------------
+const newsTicker = document.getElementById('news-ticker');
+let newsScroll=0;
+setInterval(()=>{
+  newsScroll-=2;
+  newsTicker.style.transform=`translateX(${newsScroll}px)`;
+  if(newsScroll<-newsTicker.scrollWidth) newsScroll=newsTicker.offsetWidth;
+},50);
+</script>
 </body>
 </html>
