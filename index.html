@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GlobalTrade Capital</title>
 <style>
-  /* ===== General Styles ===== */
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -22,30 +21,22 @@
     background-color: #111;
     border-bottom: 1px solid #222;
   }
-
   header h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: bold;
     color: #ffffff;
   }
-
-  nav button {
-    margin-left: 15px;
-    padding: 10px 20px;
+  #language-switch {
     background-color: #222;
     border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
     color: #f5f5f5;
     font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s;
   }
 
-  nav button:hover {
-    background-color: #444;
-  }
-
-  /* ===== Ticker ===== */
+  /* Ticker */
   #ticker {
     background-color: #111;
     padding: 10px 0;
@@ -62,60 +53,55 @@
     100% { transform: translateX(-100%); }
   }
 
-  /* ===== Main Buttons ===== */
-  .main-buttons {
-    display: flex;
-    justify-content: center;
-    margin: 60px 0;
-    gap: 30px;
-  }
+  /* Sections */
+  section { padding: 50px 40px; border-bottom: 1px solid #222; }
+  h2 { font-size: 2rem; margin-bottom: 20px; }
 
-  .main-buttons button {
-    padding: 20px 40px;
-    font-size: 1.5rem;
-    border-radius: 10px;
-    border: none;
-    background-color: #222;
-    color: #f5f5f5;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .main-buttons button:hover {
-    background-color: #444;
-  }
-
-  /* ===== Sections ===== */
-  section {
-    padding: 50px 40px;
-    border-bottom: 1px solid #222;
-  }
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-
-  .news, .testimonials, .banks {
+  /* Stocks & Crypto Cards */
+  .cards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
   }
+  .card {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1 1 220px;
+    text-align: center;
+  }
+  .card img {
+    max-width: 80px;
+    margin-bottom: 10px;
+  }
+  .card h3 { margin: 5px 0; }
+  .card p { margin: 3px 0; }
 
+  /* Trade Engine Button */
+  .trade-engine-button {
+    margin: 30px auto;
+    display: block;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    background-color: #222;
+    border: none;
+    border-radius: 8px;
+    color: #f5f5f5;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .trade-engine-button:hover { background-color: #444; }
+
+  /* News, Testimonials, Banks */
+  .news, .testimonials, .banks { display: flex; flex-wrap: wrap; gap: 20px; }
   .news div, .testimonial-card, .bank-card {
     background-color: #111;
     padding: 20px;
     border-radius: 10px;
     flex: 1 1 200px;
   }
+  .testimonial-card img, .bank-card img { max-width: 100px; margin-bottom: 10px; }
 
-  .testimonial-card img, .bank-card img {
-    max-width: 100px;
-    margin-bottom: 10px;
-  }
-
-  /* ===== Footer ===== */
   footer {
     text-align: center;
     padding: 30px;
@@ -123,39 +109,46 @@
     background-color: #111;
   }
 
-  /* ===== Language Switch ===== */
-  #language-switch {
-    background-color: #222;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #f5f5f5;
-    font-weight: bold;
-  }
-
 </style>
 </head>
 <body>
 
 <header>
-  <h1>GlobalTrade</h1>
-  <div>
-    <button id="language-switch">العربية</button>
-  </div>
+  <h1>GlobalTrade Capital</h1>
+  <button id="language-switch">العربية</button>
 </header>
 
 <!-- Top Ticker -->
 <div id="ticker">
-  <span>📈 AAPL 185.60 ↑ 1.25% | BTC/USD 27,100 ↑ 2.1% | USD/LYD 4.84 ↔</span>
+  <span>📈 AAPL 185.60 ↑ 1.25% | MSFT 310.40 ↑ 0.8% | TSLA 920.50 ↓ 0.5% | BTC/USD 27,100 ↑ 2.1%</span>
 </div>
 
-<!-- Main Buttons -->
-<div class="main-buttons">
-  <button onclick="location.href='stocks.html'">Stocks</button>
-  <button onclick="location.href='crypto.html'">Crypto</button>
-  <button onclick="location.href='exchange.html'">Exchange Rate</button>
-</div>
+<!-- Stocks Section -->
+<section id="stocks">
+  <h2>Stocks</h2>
+  <div class="cards-container" id="stocks-container">
+    <!-- Placeholder cards, will load dynamically -->
+  </div>
+</section>
+
+<!-- Crypto Section -->
+<section id="crypto">
+  <h2>Cryptocurrency</h2>
+  <div class="cards-container" id="crypto-container">
+    <!-- Placeholder cards, will load dynamically -->
+  </div>
+</section>
+
+<!-- Exchange Rates Section -->
+<section id="exchange">
+  <h2>Exchange Rates</h2>
+  <div class="cards-container" id="exchange-container">
+    <!-- Placeholder cards, will load dynamically -->
+  </div>
+</section>
+
+<!-- Trade Engine -->
+<button class="trade-engine-button" onclick="alert('Trade Engine folder will open here!')">Open Trade Engine</button>
 
 <!-- News Section -->
 <section id="news">
@@ -184,7 +177,7 @@
   </div>
 </section>
 
-<!-- Contact Us -->
+<!-- Contact -->
 <section id="contact">
   <h2>Contact Us</h2>
   <p>Email: support@globaltrade.ly</p>
@@ -216,17 +209,91 @@
   <p>All market data is for informational purposes only. Trading involves risk. Past performance is not indicative of future results.</p>
 </section>
 
-<!-- Footer -->
 <footer>
   &copy; 2026 GlobalTrade Capital
 </footer>
 
 <script>
-  // Language Switch Example
+  // Language toggle
   document.getElementById('language-switch').addEventListener('click', function() {
     alert('Language switcher will toggle to Arabic interface!');
-    // Here you can add real language switch logic
   });
+
+  // Load Stocks dynamically
+  async function loadStocks() {
+    try {
+      const res = await fetch('/api/market');
+      const data = await res.json();
+      const container = document.getElementById('stocks-container');
+      container.innerHTML = '';
+      data.stocks.forEach(stock => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <img src="${stock.logo}" alt="Logo">
+          <h3>${stock.symbol}</h3>
+          <p>Price: $${stock.price}</p>
+          <p>High: $${stock.high} | Low: $${stock.low}</p>
+          <p>Market Cap: ${stock.marketCap}</p>
+        `;
+        container.appendChild(card);
+      });
+    } catch(err) {
+      console.error(err);
+      document.getElementById('stocks-container').innerHTML = '<p>Error loading stock data.</p>';
+    }
+  }
+
+  // Load Crypto dynamically
+  async function loadCrypto() {
+    try {
+      const res = await fetch('/api/market');
+      const data = await res.json();
+      const container = document.getElementById('crypto-container');
+      container.innerHTML = '';
+      data.crypto.forEach(coin => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <img src="${coin.logo}" alt="Logo">
+          <h3>${coin.symbol}</h3>
+          <p>Price: $${coin.price}</p>
+          <p>Market Cap: ${coin.marketCap}</p>
+        `;
+        container.appendChild(card);
+      });
+    } catch(err) {
+      console.error(err);
+      document.getElementById('crypto-container').innerHTML = '<p>Error loading crypto data.</p>';
+    }
+  }
+
+  // Load Exchange Rates dynamically
+  async function loadExchange() {
+    try {
+      const res = await fetch('/api/market');
+      const data = await res.json();
+      const container = document.getElementById('exchange-container');
+      container.innerHTML = '';
+      data.exchange.forEach(rate => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <h3>${rate.currency}</h3>
+          <p>Rate: ${rate.rate}</p>
+        `;
+        container.appendChild(card);
+      });
+    } catch(err) {
+      console.error(err);
+      document.getElementById('exchange-container').innerHTML = '<p>Error loading exchange rates.</p>';
+    }
+  }
+
+  // Initialize all
+  loadStocks();
+  loadCrypto();
+  loadExchange();
 </script>
 
 </body>
