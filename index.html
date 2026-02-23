@@ -1,115 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Global Trade Capital</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalTrade Capital</title>
 <style>
-body {
+  /* ===== General Styles ===== */
+  body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0b0f1a;
-    color: white;
-}
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0a0a;
+    color: #f5f5f5;
+  }
+  a { color: #f5f5f5; text-decoration: none; }
 
-header {
-    padding: 20px;
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    background: #111827;
-}
-
-.container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
-}
-
-.card {
-    background: #111827;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-h2 {
-    margin-bottom: 15px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-}
-
-.ticker {
+  header {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #111;
     border-bottom: 1px solid #222;
-}
+  }
 
-.green { color: #00ff88; }
-.red { color: #ff4d4d; }
+  header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffffff;
+  }
 
-footer {
-    text-align: center;
+  nav button {
+    margin-left: 15px;
+    padding: 10px 20px;
+    background-color: #222;
+    border: none;
+    color: #f5f5f5;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  nav button:hover {
+    background-color: #444;
+  }
+
+  /* ===== Ticker ===== */
+  #ticker {
+    background-color: #111;
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  #ticker span {
+    display: inline-block;
+    padding: 0 50px;
+    animation: ticker 20s linear infinite;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* ===== Main Buttons ===== */
+  .main-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 60px 0;
+    gap: 30px;
+  }
+
+  .main-buttons button {
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #222;
+    color: #f5f5f5;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .main-buttons button:hover {
+    background-color: #444;
+  }
+
+  /* ===== Sections ===== */
+  section {
+    padding: 50px 40px;
+    border-bottom: 1px solid #222;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .news, .testimonials, .banks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .news div, .testimonial-card, .bank-card {
+    background-color: #111;
     padding: 20px;
-    background: #111827;
-    margin-top: 40px;
-}
+    border-radius: 10px;
+    flex: 1 1 200px;
+  }
+
+  .testimonial-card img, .bank-card img {
+    max-width: 100px;
+    margin-bottom: 10px;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 0.9rem;
+    background-color: #111;
+  }
+
+  /* ===== Language Switch ===== */
+  #language-switch {
+    background-color: #222;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #f5f5f5;
+    font-weight: bold;
+  }
+
 </style>
 </head>
-
 <body>
 
 <header>
-Global Trade Capital
+  <h1>GlobalTrade</h1>
+  <div>
+    <button id="language-switch">العربية</button>
+  </div>
 </header>
 
-<div class="container">
-
-<div class="card">
-<h2>Live Market Data</h2>
-<div id="market-data">Loading live data...</div>
+<!-- Top Ticker -->
+<div id="ticker">
+  <span>📈 AAPL 185.60 ↑ 1.25% | BTC/USD 27,100 ↑ 2.1% | USD/LYD 4.84 ↔</span>
 </div>
 
+<!-- Main Buttons -->
+<div class="main-buttons">
+  <button onclick="location.href='stocks.html'">Stocks</button>
+  <button onclick="location.href='crypto.html'">Crypto</button>
+  <button onclick="location.href='exchange.html'">Exchange Rate</button>
 </div>
 
+<!-- News Section -->
+<section id="news">
+  <h2>Latest News</h2>
+  <div class="news">
+    <div>Market opens higher on tech rally...</div>
+    <div>Libyan Dinar sees slight gains against USD...</div>
+    <div>New crypto regulations announced...</div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials">
+  <h2>Testimonials</h2>
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <img src="https://via.placeholder.com/100" alt="User">
+      <p>"GlobalTrade makes trading simple and fast!"</p>
+      <strong>- Ahmed, Tripoli</strong>
+    </div>
+    <div class="testimonial-card">
+      <img src="https://via.placeholder.com/100" alt="User">
+      <p>"Professional and clean interface, love it!"</p>
+      <strong>- Fatma, Benghazi</strong>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Us -->
+<section id="contact">
+  <h2>Contact Us</h2>
+  <p>Email: support@globaltrade.ly</p>
+  <p>Phone: +218 21 000 0000</p>
+</section>
+
+<!-- Libyan Banks -->
+<section id="banks">
+  <h2>Libyan Banks</h2>
+  <div class="banks">
+    <div class="bank-card">
+      <img src="https://via.placeholder.com/100" alt="Bank Logo">
+      <p>Central Bank of Libya</p>
+    </div>
+    <div class="bank-card">
+      <img src="https://via.placeholder.com/100" alt="Bank Logo">
+      <p>National Commercial Bank</p>
+    </div>
+    <div class="bank-card">
+      <img src="https://via.placeholder.com/100" alt="Bank Logo">
+      <p>Bank of Commerce and Development</p>
+    </div>
+  </div>
+</section>
+
+<!-- Disclaimer -->
+<section id="disclaimer">
+  <h2>Disclaimer</h2>
+  <p>All market data is for informational purposes only. Trading involves risk. Past performance is not indicative of future results.</p>
+</section>
+
+<!-- Footer -->
 <footer>
-© 2026 Global Trade Capital
+  &copy; 2026 GlobalTrade Capital
 </footer>
 
 <script>
-async function loadMarket() {
-    try {
-        const response = await fetch("/api/market");
-        const data = await response.json();
-
-        const container = document.getElementById("market-data");
-        container.innerHTML = "";
-
-        data.forEach(stock => {
-            const changeClass = stock.change >= 0 ? "green" : "red";
-
-            container.innerHTML += `
-                <div class="ticker">
-                    <div>${stock.symbol}</div>
-                    <div>$${stock.price}</div>
-                    <div class="${changeClass}">
-                        ${stock.change >= 0 ? "+" : ""}${stock.change}%
-                    </div>
-                </div>
-            `;
-        });
-
-    } catch (error) {
-        document.getElementById("market-data").innerHTML =
-            "Error loading market data.";
-        console.error(error);
-    }
-}
-
-loadMarket();
-setInterval(loadMarket, 10000); // refresh every 10 seconds
+  // Language Switch Example
+  document.getElementById('language-switch').addEventListener('click', function() {
+    alert('Language switcher will toggle to Arabic interface!');
+    // Here you can add real language switch logic
+  });
 </script>
 
 </body>
