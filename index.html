@@ -8,18 +8,18 @@
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #0a0a0a;
-    color: #f5f5f5;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #e0f7fa;
   }
-  a { color: #f5f5f5; text-decoration: none; }
+  a { color: #e0f7fa; text-decoration: none; }
 
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background-color: #111;
-    border-bottom: 1px solid #222;
+    background-color: rgba(0,0,0,0.6);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
   header h1 {
     font-size: 2.2rem;
@@ -27,18 +27,18 @@
     color: #ffffff;
   }
   #language-switch {
-    background-color: #222;
+    background-color: rgba(0,0,0,0.6);
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    color: #f5f5f5;
+    color: #e0f7fa;
     font-weight: bold;
   }
 
   /* Ticker */
   #ticker {
-    background-color: #111;
+    background-color: rgba(0,0,0,0.6);
     padding: 10px 0;
     overflow: hidden;
     white-space: nowrap;
@@ -54,17 +54,17 @@
   }
 
   /* Sections */
-  section { padding: 50px 40px; border-bottom: 1px solid #222; }
+  section { padding: 50px 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   h2 { font-size: 2rem; margin-bottom: 20px; }
 
-  /* Stocks & Crypto Cards */
+  /* Cards */
   .cards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
   }
   .card {
-    background-color: #111;
+    background-color: rgba(0,0,0,0.5);
     padding: 20px;
     border-radius: 10px;
     flex: 1 1 220px;
@@ -83,19 +83,19 @@
     display: block;
     padding: 15px 30px;
     font-size: 1.2rem;
-    background-color: #222;
+    background-color: rgba(0,0,0,0.6);
     border: none;
     border-radius: 8px;
-    color: #f5f5f5;
+    color: #e0f7fa;
     cursor: pointer;
     font-weight: bold;
   }
-  .trade-engine-button:hover { background-color: #444; }
+  .trade-engine-button:hover { background-color: rgba(0,0,0,0.8); }
 
   /* News, Testimonials, Banks */
   .news, .testimonials, .banks { display: flex; flex-wrap: wrap; gap: 20px; }
   .news div, .testimonial-card, .bank-card {
-    background-color: #111;
+    background-color: rgba(0,0,0,0.5);
     padding: 20px;
     border-radius: 10px;
     flex: 1 1 200px;
@@ -106,9 +106,8 @@
     text-align: center;
     padding: 30px;
     font-size: 0.9rem;
-    background-color: #111;
+    background-color: rgba(0,0,0,0.6);
   }
-
 </style>
 </head>
 <body>
@@ -120,14 +119,14 @@
 
 <!-- Top Ticker -->
 <div id="ticker">
-  <span>📈 AAPL 185.60 ↑ 1.25% | MSFT 310.40 ↑ 0.8% | TSLA 920.50 ↓ 0.5% | BTC/USD 27,100 ↑ 2.1%</span>
+  <span>📈 Loading live market data...</span>
 </div>
 
 <!-- Stocks Section -->
 <section id="stocks">
   <h2>Stocks</h2>
   <div class="cards-container" id="stocks-container">
-    <!-- Placeholder cards, will load dynamically -->
+    <!-- Loaded dynamically -->
   </div>
 </section>
 
@@ -135,7 +134,7 @@
 <section id="crypto">
   <h2>Cryptocurrency</h2>
   <div class="cards-container" id="crypto-container">
-    <!-- Placeholder cards, will load dynamically -->
+    <!-- Loaded dynamically -->
   </div>
 </section>
 
@@ -143,7 +142,7 @@
 <section id="exchange">
   <h2>Exchange Rates</h2>
   <div class="cards-container" id="exchange-container">
-    <!-- Placeholder cards, will load dynamically -->
+    <!-- Loaded dynamically -->
   </div>
 </section>
 
@@ -219,10 +218,14 @@
     alert('Language switcher will toggle to Arabic interface!');
   });
 
+  // Automatically use keys from Vercel
+  const ALPACA_KEY = import.meta.env.VITE_ALPACA_KEY;
+  const ALPACA_SECRET = import.meta.env.VITE_ALPACA_SECRET;
+
   // Load Stocks dynamically
   async function loadStocks() {
     try {
-      const res = await fetch('/api/market');
+      const res = await fetch('/api/market'); // your serverless endpoint
       const data = await res.json();
       const container = document.getElementById('stocks-container');
       container.innerHTML = '';
